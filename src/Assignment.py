@@ -144,7 +144,7 @@ class CSP:
         # Call backtrack with the partial assignment 'assignment'
         return self.backtrack(assignment)
 
-    def backtrack(self, assignment):
+    def backtrack(self, assignment: dict) -> dict:
         """The function 'Backtrack' from the pseudocode in the
         textbook.
 
@@ -169,6 +169,11 @@ class CSP:
         iterations of the loop.
         """
         # TODO: YOUR CODE HERE
+        complete: bool = [len(assignment[i] == 1) for i in assignment]
+        if all(complete):
+            return assignment
+        
+        
         pass
 
     def select_unassigned_variable(self, assignment):
@@ -276,3 +281,7 @@ def print_sudoku_solution(solution):
         print("")
         if row == 2 or row == 5:
             print('------+-------+------')
+
+if __name__ == "__main__":
+    csp = CSP()
+    print(csp.variables)
