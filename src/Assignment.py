@@ -177,28 +177,31 @@ class CSP:
         variable: str = self.select_unassigned_variable(assignment)
         for value in self.order_domain_values(variable, assignment):
             # Check if value is consistent with assignment
-            # if value in assignment[variable]:@
             working_assignment = copy.deepcopy(assignment)
             if self.is_consistent(variable, value, working_assignment):
-                working_assignment[variable] = value
-                do_imply = self.inference(variable, working_assignment)
+
+                print(f"For {variable} choose value:  {value}")
+                working_assignment[variable] = [value]
+                # Remove all the constraints for the given variable with its value.
+                # print(f"working_assignment: \n{working_assignment}")
+                queue = self.get_all_arcs()
+                do_imply = self.inference(variable, queue)
                 if do_imply:
                     # Add do_imply to assignment
                     result: bool = self.backtrack(working_assignment)
                     if result:
                         return result
                     # Remove do_imply from assignment
-                    
+
             else:
                 continue
-            
 
         # No solution found
         return False
-        
+
     def select_unassigned_variable(self, assignment: dict) -> str:
-        """The function 'Select-Unassigned-Variable' from the pseudocode
-        in the textbook. Should return the name of one of the variables
+        """The function 'Select-Unassigned-Variable' from the defenition
+        in the textbook (5.3.1). Should return the name of one of the variables
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
@@ -207,24 +210,35 @@ class CSP:
         for variable in assignment.keys():
             variables_constraint = assignment[variable]
             if len(variables_constraint) > 1:
+                print(f"Choosen Var: {variable}")
                 return variable
-        
-    def order_domain_values(self, variable: str, assignment: dict) -> list:
-        # TODO: YOUR CODE HERE
-        domain: list = assignment[variable]
-        return domain
-        
-    def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
-        for constraint_variable in self.constraints[variable]:
-            exists_key = assignment[constraint_variable]
-            premiss2 = constraint_variable in assignment
-            if exists_key and premiss2 == value:
-                return False
-        return True
-    
 
-    
-    
+    def order_domain_values(self, variable: str, assignment: dict) -> list:
+        """ 
+        Order the domain values of the variable in the assignment.
+        This uses the Minimum Remaining Values heuristic.
+        """
+        # TODO: YOUR CODE HERE
+        print(variable)
+        print(assignment)
+        domain: list = assignment[variable]
+        # Minimum remaining values
+        domain.sort(key=lambda x: len(x))
+        return domain
+
+    def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
+        for neighbour in self.constraints[variable]:
+            # Gets a list of all the possible values that the neighbor has
+            legal_neighbor_values = assignment[neighbour]
+
+            if len(legal_neighbor_values) == 1:
+                neighbour_value = legal_neighbor_values[0]
+                if value == neighbour_value:
+                    return False
+            # if value not in legal_neighbor_values and value not in assignment[variable]:
+            #     return False
+        return True
+
     def inference(self, assignment, queue) -> bool:
         """The function 'AC-3' from the pseudocode in the textbook.
         'assignment' is the current partial assignment, that contains
@@ -235,19 +249,19 @@ class CSP:
         and returns true otherwise. 
         """
         # TODO: YOUR CODE HERE
-        print(f"First Queue: \n{queue}")
+        # print(f"First Queue: \n{queue}")
         while (len(queue) > 0):
             x_i: str
             x_j: str
-            x_i, x_j = queue.pop(0)
+
+            x_i, x_j = queue.pop()
             if self.revise(assignment, x_i, x_j):
                 if len(self.domains[x_i]) == 0:
                     return False
                 for x_k in [x for x in self.get_all_neighboring_arcs(x_i) if x_j not in x]:
                     queue.append(x_k)
-        print(f"Second Queue: \n{queue}")
+        # print(f"Second Queue: \n{queue}")
         return True
-
 
     def revise(self, assignment, x_i: str, x_j: str):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -260,13 +274,26 @@ class CSP:
         """
         # TODO: YOUR CODE HERE
         revised = False
-        domains = copy.deepcopy(assignment[x_i])
+        print(f"Assignment: {assignment}")
+        domain_i = copy.deepcopy(assignment[x_i])
+        domain_j = assignment[x_j]
+        # for x in assignment[x_i]:
         for x in assignment[x_i]:
-            if x_i == x_j:
-                domains.remove(x)
+            found_one = False
+            for y in domain_j:
+                # for constraint in self.constraints[x_i][x_j]:
+                #     if (x, y) == constraint:
+                #         found_one = True
+                found_one = any(
+                    (x, y) == constraint for constraint in self.constraints[x_i][x_j])
+            if not found_one:
+                domain_i.remove(x)
                 revised = True
-        assignment = domains
-        return revised      
+
+        assignment[x_i] = domain_i
+
+        return revised
+
 
 def create_map_coloring_csp() -> CSP:
     """Instantiate a CSP representing the map coloring problem from the
@@ -286,11 +313,15 @@ def create_map_coloring_csp() -> CSP:
             csp.add_constraint_one_way(other_state, state, lambda i, j: i != j)
     return csp
 
+
 if __name__ == "__main__":
     csp = create_map_coloring_csp()
     # print(csp.variables)
     # print(csp.get_all_arcs())
-    print(csp.domains)
+    print(f"csp.constraints = {csp.constraints}")
+    print(f"csp.domains = {csp.domains}")
+    print(f"csp.variables = {csp.variables}")
     print(csp.backtracking_search())
-    print(csp.domains)
-
+    print(f"csp.constraints = {csp.constraints}")
+    print(f"csp.domains = {csp.domains}")
+    print(f"csp.variables = {csp.variables}")
