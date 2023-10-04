@@ -22,8 +22,6 @@ print_sudoku_solution(solution)
 print("Hard Sudoku")
 hard_sudoku = create_sudoku_csp(HARD)
 solution = hard_sudoku.backtracking_search()
-print(f"solution = {solution}")
-print(f"hard_sudoku solution = {solution}")
 print_sudoku_solution(solution)
 
 print("Very Hard Sudoku")
