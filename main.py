@@ -7,6 +7,7 @@ EASY = "data/easy.txt"
 MEDIUM = "data/medium.txt"
 HARD = "data/hard.txt"
 VERY_HARD = "data/veryhard.txt"
+SUPER_HARD = "data/superhard.txt"
 
 def solve_sudoku(filename, title):
     print("Sudoku from file: " + filename)
@@ -22,3 +23,5 @@ if __name__ == "__main__":
     solve_sudoku(MEDIUM, "MEDIUM")
     solve_sudoku(HARD, "HARD")
     solve_sudoku(VERY_HARD, "VERY_HARD")
+    solve_sudoku(SUPER_HARD, "SUPER_HARD")
+    print("Map coloring problem")
