@@ -1,4 +1,3 @@
-import pytest
 from src.constraint_satisfaction_problem import CSP  
 from src.map_coloring_util import create_map_coloring_csp  
 
