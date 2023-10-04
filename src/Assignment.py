@@ -135,7 +135,7 @@ class CSP:
         # domains of the CSP variables. The deep copy is required to
         # ensure that any changes made to 'assignment' does not have any
         # side effects elsewhere.
-        print(f"The self domains {self.domains}")
+        print(f"The initial assignment {self.domains}")
         assignment = copy.deepcopy(self.domains)
 
         # Run AC-3 on all constraints in the CSP, to weed out all of the
@@ -143,7 +143,7 @@ class CSP:
         self.inference(assignment, self.get_all_arcs())
 
         # Call backtrack with the partial assignment 'assignment'
-        print(f"The initital asssignment {assignment}")
+        print(f"After inference and before backtrack {assignment}")
         return self.backtrack(assignment)
 
     def backtrack(self, assignment):
@@ -172,35 +172,36 @@ class CSP:
         """
         # TODO: YOUR CODE HERE
 
+        working_assignment = copy.deepcopy(assignment)
         # Check if assignment is complete
-        if all(len(assignment[variable]) == 1 for variable in assignment):
+        if all(len(working_assignment[variable]) == 1 for variable in working_assignment):
             print("Found solution!")
-            return assignment
+            return working_assignment
 
         variable: str = self.select_unassigned_variable(assignment)
+
+        if variable is None:
+            return assignment
+        
         for value in self.order_domain_values(variable, assignment):
             # Check if value is consistent with assignment
-            working_assignment = copy.deepcopy(assignment)
             print(f"{working_assignment} DENNE ER WORKING :D")
             if self.is_consistent(variable, value, working_assignment):
 
                 print(f"For {variable} choose value:  {value}")
                 working_assignment[variable] = [value]
-                print(working_assignment)
-                # Remove all the constraints for the given variable with its value.
-                # print(f"working_assignment: \n{working_assignment}")
+
                 queue = self.get_all_arcs()
-                print(f"queue: {queue}")
+
+                # Prune the domain of the neighbors of the variable
                 do_imply = self.inference(working_assignment, queue)
+
                 if do_imply:
                     # Add do_imply to assignment
                     result: bool = self.backtrack(working_assignment)
                     if result:
                         return result
-                    # Remove do_imply from assignment
 
-            else:
-                continue
 
         # No solution found
         return False
@@ -220,17 +221,20 @@ class CSP:
                 return variable
 
     def order_domain_values(self, variable: str, assignment: dict) -> list:
-        """ 
-        Order the domain values of the variable in the assignment.
-        This uses the Minimum Remaining Values heuristic.
-        """
-        # TODO: YOUR CODE HERE
-        # print(variable)
-        # print(assignment)
-        domain: list = assignment[variable]
-        # Minimum remaining values
-        domain.sort(key=lambda x: len(x))
-        return domain
+        """Order the domain values of the variable in the assignment using
+        the Least Constraining Value heuristic."""
+        domain = assignment[variable]
+        
+        def count_constrained_values(value):
+            count = 0
+            for neighbor in self.constraints[variable]:
+                if value in assignment[neighbor]:
+                    count += 1
+            return count
+        
+        # Sort domain values by the number of constraints they participate in
+        ordered_domain = sorted(domain, key=count_constrained_values)
+        return ordered_domain
 
     def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
         for neighbour in self.constraints[variable]:
@@ -264,7 +268,7 @@ class CSP:
             if self.revise(assignment, x_i, x_j):
                 if len(self.domains[x_i]) == 0:
                     return False
-                for x_k in [x for x in self.get_all_neighboring_arcs(x_i) if x_j not in x]:
+                for x_k in list(filter(lambda x: x_j not in x, self.get_all_neighboring_arcs(x_i))):
                     queue.append(x_k)
         # print(f"Second Queue: \n{queue}")
         return True
@@ -287,11 +291,9 @@ class CSP:
         for x in assignment[x_i]:
             found_one = False
             for y in domain_j:
-                # for constraint in self.constraints[x_i][x_j]:
-                #     if (x, y) == constraint:
-                #         found_one = True
-                found_one = any(
-                    (x, y) == constraint for constraint in self.constraints[x_i][x_j])
+                for constraint in self.constraints[x_i][x_j]:
+                    if (x, y) == constraint:
+                        found_one = True
             if not found_one:
                 domain_i.remove(x)
                 revised = True

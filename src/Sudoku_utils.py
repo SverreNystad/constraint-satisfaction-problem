@@ -2,7 +2,7 @@
 All given Sudoku utils.
 '''
 
-from Assignment import CSP
+from src.Assignment import CSP
 
 def create_sudoku_csp(filename: str) -> CSP:
     """Instantiate a CSP representing the Sudoku board found in the text
