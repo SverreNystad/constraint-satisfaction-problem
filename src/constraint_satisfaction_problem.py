@@ -192,14 +192,13 @@ class CSP:
             # Try to assign the value to the variable
             working_assignment[variable] = [value]
 
-            # Find all arcs that are neighbors of the variable and check if they are arc consistent by pruning their space
-            queue = self.get_all_neighboring_arcs(variable)
+            # Find all arcs of the variable and check if they are arc consistent by pruning their space
+            queue = self.get_all_arcs()
 
             # Prune the domain of the neighbors of the variable, as inference mutates the assignment we need to make a copy
             pruned_working_assignment = copy.deepcopy(working_assignment)
-            do_imply = self.inference(pruned_working_assignment, queue)
 
-            if do_imply:
+            if self.inference(pruned_working_assignment, queue):
                 # The assignment is arc consistent, so continue with the next variable
                 result: bool = self.backtrack(pruned_working_assignment)
                 if result:
@@ -237,7 +236,6 @@ class CSP:
         Returns false if an inconsistency is found,
         and returns true otherwise. 
         """
-        # TODO: YOUR CODE HERE
         while len(queue):
             x_i: str
             x_j: str
@@ -261,7 +259,6 @@ class CSP:
         between i and j, the value should be deleted from i's list of
         legal values in 'assignment'.
         """
-        # TODO: YOUR CODE HERE
         revised = False
         domain_i = copy.deepcopy(assignment[x_i])
         domain_j = assignment[x_j]
@@ -278,3 +275,8 @@ class CSP:
 
         assignment[x_i] = domain_i
         return revised
+    
+    def print_stats(self):
+        """Print the number of times the backtrack function was called and the number of times it failed."""
+        print("Backtrack attempts: " + str(self.backtrack_attempts))
+        print("Backtrack failures: " + str(self.failures))

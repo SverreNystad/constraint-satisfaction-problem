@@ -1,6 +1,6 @@
 """ The main entrypoint for the application. """
 
-from src.Sudoku_utils import create_sudoku_csp, print_sudoku_solution
+from src.sudoku_utils import create_sudoku_csp, print_sudoku_solution
 from src.map_coloring_util import create_map_coloring_csp
 EASY = "data/easy.txt"
 MEDIUM = "data/medium.txt"
@@ -11,6 +11,7 @@ def solve_sudoku(filename):
     print("Sudoku from file: " + filename)
     sudoku = create_sudoku_csp(filename)
     solution = sudoku.backtracking_search()
+    sudoku.print_stats()
     print_sudoku_solution(solution)
     print("")
 
