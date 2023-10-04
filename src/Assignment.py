@@ -14,6 +14,10 @@ class CSP:
         # self.domains is a dictionary of domains (lists)
         self.domains = {}
 
+        # Log the number of times the backtrack function is called and the number of times it fails
+        self.backtrack_attempts = 0
+        self.faliures = 0
+
         # self.constraints[i][j] is a list of legal value pairs for
         # the variable pair (i, j)
         self.constraints = {}
@@ -135,15 +139,17 @@ class CSP:
         # domains of the CSP variables. The deep copy is required to
         # ensure that any changes made to 'assignment' does not have any
         # side effects elsewhere.
-        print(f"The initial assignment {self.domains}")
         assignment = copy.deepcopy(self.domains)
+
+        # Reset log
+        self.backtrack_attempts = 0
+        self.faliures = 0
 
         # Run AC-3 on all constraints in the CSP, to weed out all of the
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
 
         # Call backtrack with the partial assignment 'assignment'
-        print(f"After inference and before backtrack {assignment}")
         return self.backtrack(assignment)
 
     def backtrack(self, assignment):
@@ -171,6 +177,8 @@ class CSP:
         iterations of the loop.
         """
         # TODO: YOUR CODE HERE
+        # Log the number of times the backtrack function is called
+        self.backtrack_attempts += 1
 
         working_assignment = copy.deepcopy(assignment)
         # Check if assignment is complete
@@ -185,7 +193,6 @@ class CSP:
         
         for value in self.order_domain_values(variable, assignment):
             # Check if value is consistent with assignment
-            print(f"{working_assignment} DENNE ER WORKING :D")
             if self.is_consistent(variable, value, working_assignment):
 
                 print(f"For {variable} choose value:  {value}")
@@ -204,6 +211,7 @@ class CSP:
 
 
         # No solution found
+        self.faliures += 1
         return False
 
     def select_unassigned_variable(self, assignment: dict) -> str:
@@ -237,6 +245,7 @@ class CSP:
         return ordered_domain
 
     def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
+        """ The """
         for neighbour in self.constraints[variable]:
             # Gets a list of all the possible values that the neighbor has
             legal_neighbor_values = assignment[neighbour]
