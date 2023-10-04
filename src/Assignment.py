@@ -144,7 +144,7 @@ class CSP:
         # Call backtrack with the partial assignment 'assignment'
         return self.backtrack(assignment)
 
-    def backtrack(self, assignment: dict) -> dict:
+    def backtrack(self, assignment):
         """The function 'Backtrack' from the pseudocode in the
         textbook.
 
@@ -169,32 +169,87 @@ class CSP:
         iterations of the loop.
         """
         # TODO: YOUR CODE HERE
-        complete: bool = [len(assignment[i] == 1) for i in assignment]
-        if all(complete):
-            return assignment
-        
-        
-        pass
 
-    def select_unassigned_variable(self, assignment):
+        # Check if assignment is complete
+        if all(len(assignment[variable]) == 1 for variable in assignment):
+            return assignment
+
+        variable: str = self.select_unassigned_variable(assignment)
+        for value in self.order_domain_values(variable, assignment):
+            # Check if value is consistent with assignment
+            # if value in assignment[variable]:@
+            working_assignment = copy.deepcopy(assignment)
+            if self.is_consistent(variable, value, working_assignment):
+                working_assignment[variable] = value
+                do_imply = self.inference(variable, working_assignment)
+                if do_imply:
+                    # Add do_imply to assignment
+                    result: bool = self.backtrack(working_assignment)
+                    if result:
+                        return result
+                    # Remove do_imply from assignment
+                    
+            else:
+                continue
+            
+
+        # No solution found
+        return False
+        
+    def select_unassigned_variable(self, assignment: dict) -> str:
         """The function 'Select-Unassigned-Variable' from the pseudocode
         in the textbook. Should return the name of one of the variables
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
         # TODO: YOUR CODE HERE
-        pass
+        variable: str
+        for variable in assignment.keys():
+            variables_constraint = assignment[variable]
+            if len(variables_constraint) > 1:
+                return variable
+        
+    def order_domain_values(self, variable: str, assignment: dict) -> list:
+        # TODO: YOUR CODE HERE
+        domain: list = assignment[variable]
+        return domain
+        
+    def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
+        for constraint_variable in self.constraints[variable]:
+            exists_key = assignment[constraint_variable]
+            premiss2 = constraint_variable in assignment
+            if exists_key and premiss2 == value:
+                return False
+        return True
+    
 
-    def inference(self, assignment, queue):
+    
+    
+    def inference(self, assignment, queue) -> bool:
         """The function 'AC-3' from the pseudocode in the textbook.
         'assignment' is the current partial assignment, that contains
         the lists of legal values for each undecided variable. 'queue'
         is the initial queue of arcs that should be visited.
+
+        Returns false if an inconsistency is found,
+        and returns true otherwise. 
         """
         # TODO: YOUR CODE HERE
-        pass
+        print(f"First Queue: \n{queue}")
+        while (len(queue) > 0):
+            x_i: str
+            x_j: str
+            x_i, x_j = queue.pop(0)
+            if self.revise(assignment, x_i, x_j):
+                if len(self.domains[x_i]) == 0:
+                    return False
+                for x_k in [x for x in self.get_all_neighboring_arcs(x_i) if x_j not in x]:
+                    queue.append(x_k)
+        print(f"Second Queue: \n{queue}")
+        return True
 
-    def revise(self, assignment, i, j):
+
+    def revise(self, assignment, x_i: str, x_j: str):
         """The function 'Revise' from the pseudocode in the textbook.
         'assignment' is the current partial assignment, that contains
         the lists of legal values for each undecided variable. 'i' and
@@ -204,10 +259,16 @@ class CSP:
         legal values in 'assignment'.
         """
         # TODO: YOUR CODE HERE
-        pass
+        revised = False
+        domains = copy.deepcopy(assignment[x_i])
+        for x in assignment[x_i]:
+            if x_i == x_j:
+                domains.remove(x)
+                revised = True
+        assignment = domains
+        return revised      
 
-
-def create_map_coloring_csp():
+def create_map_coloring_csp() -> CSP:
     """Instantiate a CSP representing the map coloring problem from the
     textbook. This can be useful for testing your CSP solver as you
     develop your code.
@@ -225,63 +286,11 @@ def create_map_coloring_csp():
             csp.add_constraint_one_way(other_state, state, lambda i, j: i != j)
     return csp
 
-
-def create_sudoku_csp(filename: str) -> CSP:
-    """Instantiate a CSP representing the Sudoku board found in the text
-    file named 'filename' in the current directory.
-
-    Parameters
-    ----------
-    filename : str
-        Filename of the Sudoku board to solve
-
-    Returns
-    -------
-    CSP
-        A CSP instance
-    """
-    csp = CSP()
-    board = list(map(lambda x: x.strip(), open(filename, 'r')))
-
-    for row in range(9):
-        for col in range(9):
-            if board[row][col] == '0':
-                csp.add_variable('%d-%d' % (row, col), list(map(str,
-                                                                range(1, 10))))
-            else:
-                csp.add_variable('%d-%d' % (row, col), [board[row][col]])
-
-    for row in range(9):
-        csp.add_all_different_constraint(['%d-%d' % (row, col)
-                                          for col in range(9)])
-    for col in range(9):
-        csp.add_all_different_constraint(['%d-%d' % (row, col)
-                                         for row in range(9)])
-    for box_row in range(3):
-        for box_col in range(3):
-            cells = []
-            for row in range(box_row * 3, (box_row + 1) * 3):
-                for col in range(box_col * 3, (box_col + 1) * 3):
-                    cells.append('%d-%d' % (row, col))
-            csp.add_all_different_constraint(cells)
-
-    return csp
-
-
-def print_sudoku_solution(solution):
-    """Convert the representation of a Sudoku solution as returned from
-    the method CSP.backtracking_search(), into a human readable
-    representation.
-    """
-    for row in range(9):
-        for col in range(9):
-            print(solution['%d-%d' % (row, col)][0], end=" "),
-            if col == 2 or col == 5:
-                print('|', end=" "),
-        print("")
-        if row == 2 or row == 5:
-            print('------+-------+------')
-
 if __name__ == "__main__":
-    csp = CSP()
-    print(csp.variables)
+    csp = create_map_coloring_csp()
+    # print(csp.variables)
+    # print(csp.get_all_arcs())
+    print(csp.domains)
+    print(csp.backtracking_search())
+    print(csp.domains)
+
