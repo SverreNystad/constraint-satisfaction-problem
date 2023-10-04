@@ -2,7 +2,7 @@
 All given Sudoku utils.
 '''
 
-from src.Assignment import CSP
+from src.constraint_satisfaction_problem import CSP
 
 def create_sudoku_csp(filename: str) -> CSP:
     """Instantiate a CSP representing the Sudoku board found in the text
@@ -46,7 +46,7 @@ def create_sudoku_csp(filename: str) -> CSP:
     return csp
 
 
-def print_sudoku_solution(solution):
+def print_sudoku_solution(solution) -> None:
     """Convert the representation of a Sudoku solution as returned from
     the method CSP.backtracking_search(), into a human readable
     representation.
