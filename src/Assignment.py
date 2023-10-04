@@ -215,7 +215,6 @@ class CSP:
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
-        # TODO: YOUR CODE HERE
         variable: str
         for variable in assignment.keys():
             variables_constraint = assignment[variable]
@@ -223,20 +222,11 @@ class CSP:
                 return variable
 
     def order_domain_values(self, variable: str, assignment: dict) -> list:
-        """Order the domain values of the variable in the assignment using
-        the Least Constraining Value heuristic."""
+        """Order the domain values of the variable in the assignment using the minimum remaining values heuristic."""
         domain = assignment[variable]
         
-        def count_constrained_values(value):
-            count = 0
-            for neighbor in self.constraints[variable]:
-                if value in assignment[neighbor]:
-                    count += 1
-            return count
-        
-        # Sort domain values by the number of constraints they participate in
-        ordered_domain = sorted(domain, key=count_constrained_values)
-        return ordered_domain
+        domain.sort(key=lambda x: len(x))
+        return domain
 
     def inference(self, assignment, queue) -> bool:
         """The function 'AC-3' from the pseudocode in the textbook.
