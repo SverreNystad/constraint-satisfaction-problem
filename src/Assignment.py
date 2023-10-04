@@ -16,7 +16,7 @@ class CSP:
 
         # Log the number of times the backtrack function is called and the number of times it fails
         self.backtrack_attempts = 0
-        self.faliures = 0
+        self.failures = 0
 
         # self.constraints[i][j] is a list of legal value pairs for
         # the variable pair (i, j)
@@ -143,7 +143,7 @@ class CSP:
 
         # Reset log
         self.backtrack_attempts = 0
-        self.faliures = 0
+        self.failures = 0
 
         # Run AC-3 on all constraints in the CSP, to weed out all of the
         # values that are not arc-consistent to begin with
@@ -191,21 +191,22 @@ class CSP:
         for value in self.order_domain_values(variable, assignment):
             # Try to assign the value to the variable
             working_assignment[variable] = [value]
+
             # Find all arcs that are neighbors of the variable and check if they are arc consistent by pruning their space
             queue = self.get_all_neighboring_arcs(variable)
 
-            # Prune the domain of the neighbors of the variable
+            # Prune the domain of the neighbors of the variable, as inference mutates the assignment we need to make a copy
             pruned_working_assignment = copy.deepcopy(working_assignment)
             do_imply = self.inference(pruned_working_assignment, queue)
 
             if do_imply:
-                # Add do_imply to assignment
+                # The assignment is arc consistent, so continue with the next variable
                 result: bool = self.backtrack(pruned_working_assignment)
                 if result:
                     return result
 
         # No solution found
-        self.faliures += 1
+        self.failures += 1
         return False
 
     def select_unassigned_variable(self, assignment: dict) -> str:
@@ -251,12 +252,12 @@ class CSP:
             x_i: str
             x_j: str
             x_j, x_i = queue.pop()
-            # print(f"revise({x_i}, {x_j})")
+
             if self.revise(assignment, x_i, x_j):
                 # The domain of x_i has been reduced to only legal values.
                 if len(assignment[x_i]) == 0:
                     return False
-                # 
+                # Add all arcs that are neighbors of x_i and not x_j
                 for x_k in [arc for arc in self.get_all_neighboring_arcs(x_i) if x_j not in arc]:
                     queue.append(x_k)
         return True
