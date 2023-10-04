@@ -187,28 +187,22 @@ class CSP:
             return working_assignment
 
         variable: str = self.select_unassigned_variable(assignment)
-
-        if variable is None:
-            return assignment
         
         for value in self.order_domain_values(variable, assignment):
-            # Check if value is consistent with assignment
-            if self.is_consistent(variable, value, working_assignment):
+            # Try to assign the value to the variable
+            working_assignment[variable] = [value]
+            # Find all arcs that are neighbors of the variable and check if they are arc consistent by pruning their space
+            queue = self.get_all_neighboring_arcs(variable)
 
-                print(f"For {variable} choose value:  {value}")
-                working_assignment[variable] = [value]
+            # Prune the domain of the neighbors of the variable
+            pruned_working_assignment = copy.deepcopy(working_assignment)
+            do_imply = self.inference(pruned_working_assignment, queue)
 
-                queue = self.get_all_arcs()
-
-                # Prune the domain of the neighbors of the variable
-                do_imply = self.inference(working_assignment, queue)
-
-                if do_imply:
-                    # Add do_imply to assignment
-                    result: bool = self.backtrack(working_assignment)
-                    if result:
-                        return result
-
+            if do_imply:
+                # Add do_imply to assignment
+                result: bool = self.backtrack(pruned_working_assignment)
+                if result:
+                    return result
 
         # No solution found
         self.faliures += 1
@@ -225,7 +219,6 @@ class CSP:
         for variable in assignment.keys():
             variables_constraint = assignment[variable]
             if len(variables_constraint) > 1:
-                # print(f"Choosen Var: {variable}")
                 return variable
 
     def order_domain_values(self, variable: str, assignment: dict) -> list:
@@ -244,20 +237,6 @@ class CSP:
         ordered_domain = sorted(domain, key=count_constrained_values)
         return ordered_domain
 
-    def is_consistent(self, variable: str, value: str, assignment: dict) -> bool:
-        """ The """
-        for neighbour in self.constraints[variable]:
-            # Gets a list of all the possible values that the neighbor has
-            legal_neighbor_values = assignment[neighbour]
-
-            if len(legal_neighbor_values) == 1:
-                neighbour_value = legal_neighbor_values[0]
-                if value == neighbour_value:
-                    return False
-            # if value not in legal_neighbor_values and value not in assignment[variable]:
-            #     return False
-        return True
-
     def inference(self, assignment, queue) -> bool:
         """The function 'AC-3' from the pseudocode in the textbook.
         'assignment' is the current partial assignment, that contains
@@ -268,21 +247,21 @@ class CSP:
         and returns true otherwise. 
         """
         # TODO: YOUR CODE HERE
-        # print(f"First Queue: \n{queue}")
-        while (len(queue) > 0):
+        while len(queue):
             x_i: str
             x_j: str
-
-            x_i, x_j = queue.pop()
+            x_j, x_i = queue.pop()
+            # print(f"revise({x_i}, {x_j})")
             if self.revise(assignment, x_i, x_j):
-                if len(self.domains[x_i]) == 0:
+                # The domain of x_i has been reduced to only legal values.
+                if len(assignment[x_i]) == 0:
                     return False
-                for x_k in list(filter(lambda x: x_j not in x, self.get_all_neighboring_arcs(x_i))):
+                # 
+                for x_k in [arc for arc in self.get_all_neighboring_arcs(x_i) if x_j not in arc]:
                     queue.append(x_k)
-        # print(f"Second Queue: \n{queue}")
         return True
 
-    def revise(self, assignment, x_i: str, x_j: str):
+    def revise(self, assignment, x_i: str, x_j: str) -> bool:
         """The function 'Revise' from the pseudocode in the textbook.
         'assignment' is the current partial assignment, that contains
         the lists of legal values for each undecided variable. 'i' and
@@ -293,10 +272,9 @@ class CSP:
         """
         # TODO: YOUR CODE HERE
         revised = False
-        # print(f"{assignment} SISTE ASSIGNMENT:D")
         domain_i = copy.deepcopy(assignment[x_i])
         domain_j = assignment[x_j]
-        # for x in assignment[x_i]:
+
         for x in assignment[x_i]:
             found_one = False
             for y in domain_j:
