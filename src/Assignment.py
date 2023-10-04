@@ -135,6 +135,7 @@ class CSP:
         # domains of the CSP variables. The deep copy is required to
         # ensure that any changes made to 'assignment' does not have any
         # side effects elsewhere.
+        print(f"The self domains {self.domains}")
         assignment = copy.deepcopy(self.domains)
 
         # Run AC-3 on all constraints in the CSP, to weed out all of the
@@ -142,6 +143,7 @@ class CSP:
         self.inference(assignment, self.get_all_arcs())
 
         # Call backtrack with the partial assignment 'assignment'
+        print(f"The initital asssignment {assignment}")
         return self.backtrack(assignment)
 
     def backtrack(self, assignment):
@@ -172,20 +174,24 @@ class CSP:
 
         # Check if assignment is complete
         if all(len(assignment[variable]) == 1 for variable in assignment):
+            print("Found solution!")
             return assignment
 
         variable: str = self.select_unassigned_variable(assignment)
         for value in self.order_domain_values(variable, assignment):
             # Check if value is consistent with assignment
             working_assignment = copy.deepcopy(assignment)
+            print(f"{working_assignment} DENNE ER WORKING :D")
             if self.is_consistent(variable, value, working_assignment):
 
                 print(f"For {variable} choose value:  {value}")
                 working_assignment[variable] = [value]
+                print(working_assignment)
                 # Remove all the constraints for the given variable with its value.
                 # print(f"working_assignment: \n{working_assignment}")
                 queue = self.get_all_arcs()
-                do_imply = self.inference(variable, queue)
+                print(f"queue: {queue}")
+                do_imply = self.inference(working_assignment, queue)
                 if do_imply:
                     # Add do_imply to assignment
                     result: bool = self.backtrack(working_assignment)
@@ -210,7 +216,7 @@ class CSP:
         for variable in assignment.keys():
             variables_constraint = assignment[variable]
             if len(variables_constraint) > 1:
-                print(f"Choosen Var: {variable}")
+                # print(f"Choosen Var: {variable}")
                 return variable
 
     def order_domain_values(self, variable: str, assignment: dict) -> list:
@@ -219,8 +225,8 @@ class CSP:
         This uses the Minimum Remaining Values heuristic.
         """
         # TODO: YOUR CODE HERE
-        print(variable)
-        print(assignment)
+        # print(variable)
+        # print(assignment)
         domain: list = assignment[variable]
         # Minimum remaining values
         domain.sort(key=lambda x: len(x))
@@ -274,7 +280,7 @@ class CSP:
         """
         # TODO: YOUR CODE HERE
         revised = False
-        print(f"Assignment: {assignment}")
+        # print(f"{assignment} SISTE ASSIGNMENT:D")
         domain_i = copy.deepcopy(assignment[x_i])
         domain_j = assignment[x_j]
         # for x in assignment[x_i]:
@@ -291,7 +297,6 @@ class CSP:
                 revised = True
 
         assignment[x_i] = domain_i
-
         return revised
 
 
@@ -318,9 +323,10 @@ if __name__ == "__main__":
     csp = create_map_coloring_csp()
     # print(csp.variables)
     # print(csp.get_all_arcs())
-    print(f"csp.constraints = {csp.constraints}")
-    print(f"csp.domains = {csp.domains}")
-    print(f"csp.variables = {csp.variables}")
+    # print(f"csp.constraints = {csp.constraints}")
+    # print(f"csp.domains = {csp.domains}")
+    # print(f"csp.variables = {csp.variables}")
+
     print(csp.backtracking_search())
     print(f"csp.constraints = {csp.constraints}")
     print(f"csp.domains = {csp.domains}")
