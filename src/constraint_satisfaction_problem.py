@@ -270,6 +270,7 @@ class CSP:
                     if (x, y) == constraint:
                         found_one = True
             if not found_one:
+                # Remove the domain value from the domainspace of the variable
                 domain_i.remove(x)
                 revised = True
 
