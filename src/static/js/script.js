@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function sendBoardToServer(boardArray) {
     showLoading();  // Show loading spinner when sending request
-    
+    resetErrorMessage();
     fetch('/solve', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -74,6 +74,7 @@ function sendBoardToServer(boardArray) {
     })
     .then(response => {
         if (!response.ok) {
+            updateErrorMessage();
             throw new Error('Network response was not ok: ' + response.statusText);
         }
         return response.json();
@@ -98,8 +99,6 @@ function sendBoardToServer(boardArray) {
     });
 }
 
-
-
 function showLoading() {
     document.getElementById('loading').classList.remove('loading-hidden');
     document.getElementById('loading').classList.add('loading-visible');
@@ -110,6 +109,15 @@ function hideLoading() {
     document.getElementById('loading').classList.add('loading-hidden');
 }
 
+function updateErrorMessage() {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.innerText = 'Error: Invalid board';
+}
+
+function resetErrorMessage() {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.innerText = '';
+}
 
 function updateStats(stats) {
     console.log("Updating stats with:", stats);
