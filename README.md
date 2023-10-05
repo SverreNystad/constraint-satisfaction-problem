@@ -42,9 +42,16 @@ The application is built with Flask and pure javascript. The CSP is implemented 
 
 
 ## Usage
-
+There are two usages of this application. The first one is to use the application as a web application. The second one is to use the application as a python library.
+1. To use the application as a web application, you need to run the following commands:
 ```bash
+cd src
 flask run
+```
+
+2. To use the application as a python library, you need to run the following commands:
+```bash
+python main.py
 ```
 
 ## Installation
