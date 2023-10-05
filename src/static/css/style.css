@@ -125,3 +125,49 @@ td:focus {
     box-shadow: 0 5px #666;
     transform: translateY(2px);
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+.cool-h1 {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(155, 141, 141);
+    text-shadow: 2px 2px 4px #999;
+    text-align: center;
+    font-size: 36px;
+    transition: all 0.5s ease;
+}
+
+.cool-h1:hover {
+    text-shadow: 4px 4px 6px #666;
+    transform: scale(1.05);
+}
+
+.cool-h1::before,
+.cool-h1::after {
+    content: "";
+    display: inline-block;
+    width: 50px;
+    height: 2px;
+    background:  rgb(126, 122, 122);
+    position: relative;
+    vertical-align: middle;
+    transition: all 0.5s ease;
+}
+
+.cool-h1::before { 
+    margin-right: 15px;
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+}
+
+.cool-h1::after {
+    margin-left: 15px;
+    transform: scaleX(0);
+    transform-origin: 0% 50%;
+}
+
+.cool-h1:hover::before,
+.cool-h1:hover::after {
+    transform: scaleX(1);
+}
