@@ -33,13 +33,18 @@
 </details>
 
 ## Introduction
+This is the sudoku solver. It uses CSP to solve the sudoku. The creators of this application have both never solved a sudoku, but with the power of CSP, we can solve any sudoku. Enjoy the application and have fun solving Sudokus.
 
+The application is built with Flask and pure javascript. The CSP is implemented in python. The CSP is a backtracking algorithm. To learn more about CSP look here [CSP](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) and our [Assignment](docs/Assignment%203%20Constraint%20Satisfaction%20Problems.pdf).
+
+## Picture of the application:
+![Alt text](docs\images\application.png)
 
 
 ## Usage
 
 ```bash
-python src/main.py
+flask run
 ```
 
 ## Installation
@@ -51,8 +56,8 @@ To install the PROJECT NAME, one needs to have all the prerequisites installed a
 ### Setup
 1. Clone the repository
 ```bash
-git clone https://github.com/USERNAME/REPONAME.git
-cd PROJECT NAME
+git clone https://github.com/SverreNystad/constraint-satisfaction-problem.git
+cd constraint-satisfaction-problem
 ```
 2. Create a virtual environment
     #### On Windows:
@@ -70,13 +75,6 @@ cd PROJECT NAME
 ```bash
 pip install -r requirements.txt
 ```
-
-4. Create a file called `.env` in the root directory of the project. Add the following lines to the file:
-```bash
-touch .env
-echo "SECRET=SECRET_VALUE" > .env # Remember to change SECRET_VALUE to your actual key
-```
-
 ## Tests
 To run all the tests, run the following command in the root directory of the project:
 ```bash
