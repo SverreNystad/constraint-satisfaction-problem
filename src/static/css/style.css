@@ -6,20 +6,49 @@ body {
     min-height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    /* background: linear-gradient(to border-top, #f0f0f0, #d3bfb1); */
+    background: linear-gradient(-45deg, #ffffff, #f4ebe5, #c9d8de, #e2f8f3);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 table {
     border-collapse: collapse;
+    color: black;
+    font-weight: bold;
 }
 
 td {
     width: 50px;
     height: 50px;
-    border: 1px solid #ccc;
+    border: 1px solid #525050;
     text-align: center;
     vertical-align: middle;
     font-size: 24px;
     cursor: pointer;
+}
+
+/* Emphasize 3x3 grids */
+tr:nth-child(3) td,
+tr:nth-child(6) td {
+    border-bottom: 2px solid #666;
+}
+
+td:nth-child(3),
+td:nth-child(6) {
+    border-right: 2px solid #666;
 }
 
 td:hover {
