@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleInput(event) {
-    // Allow navigation keys: backspace, left, and right
+    // Allow navigation keys
     if (event.key === "Backspace" || event.key === "ArrowRight" || event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "Delete") {
         return true;
     }
@@ -33,43 +33,7 @@ function handleMaxSize(event) {
     }
 }
 
-// ... previous code ...
-
-// function sendBoardToServer(boardArray) {
-//     fetch('/solve', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             board: boardArray
-//         })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         const solution = data.solution;
-//         // Now update your board with the received solution
-//         updateBoard(solution);
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-function updateBoard(solution) {
-    const board = document.getElementById('sudoku-board');
-    for (let i = 0; i < 9; i++) {
-        const row = board.rows[i];
-        for (let j = 0; j < 9; j++) {
-            const cell = row.cells[j];
-            cell.innerText = solution[i][j];
-        }
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-    // ... (other code for generating board, etc.) ...
-
     const solveButton = document.getElementById('solve-button');
     solveButton.addEventListener('click', function() {
         const boardArray = getBoardAsArray();
@@ -77,6 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function getBoardAsArray() {
+    const board = document.getElementById('sudoku-board');
+    const boardArray = Array.from(board.rows).map(row => 
+        Array.from(row.cells).map(cell => cell.innerText || '')
+    );
+    return boardArray;
+}
+
+// Reset the board to empty
 document.addEventListener("DOMContentLoaded", () => {
     const clearButton = document.getElementById('clear-button');
     clearButton.addEventListener('click', function() {
@@ -90,51 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-function getBoardAsArray() {
-    const board = document.getElementById('sudoku-board');
-    const boardArray = Array.from(board.rows).map(row => 
-        Array.from(row.cells).map(cell => cell.innerText || '')
-    );
-    return boardArray;
-}
-
-function updateBoard(solution) {
-    console.log("Updating board with:", solution);
-    const board = document.getElementById('sudoku-board');
-    for (let i = 0; i < 9; i++) {
-        const row = board.rows[i];
-        for (let j = 0; j < 9; j++) {
-            const key = `${i}-${j}`;
-            const value = solution[key];
-
-            if (value && value[0] !== undefined) {
-                const cell = row.cells[j];
-                cell.innerText = value[0];
-            } else {
-                console.error(`Undefined value at solution[${key}]`);
-            }
-        }
-    }
-}
-
-function updateStats(stats) {
-    console.log("Updating stats with:", stats);
-    // stats is a dictionary with the following keys: backtrack_attempts, failures
-    const statsElement = document.getElementById('stats');
-    statsElement.innerText = `Backtrack attempts: ${stats.backtrack_attempts}, failures: ${stats.failures}`;
-
-}
-
-
-function showLoading() {
-    document.getElementById('loading').classList.remove('loading-hidden');
-    document.getElementById('loading').classList.add('loading-visible');
-}
-
-function hideLoading() {
-    document.getElementById('loading').classList.remove('loading-visible');
-    document.getElementById('loading').classList.add('loading-hidden');
-}
 
 function sendBoardToServer(boardArray) {
     showLoading();  // Show loading spinner when sending request
@@ -168,4 +96,44 @@ function sendBoardToServer(boardArray) {
         hideLoading();  // Hide loading spinner if an error occurs
         console.error('Fetch error:', error);
     });
+}
+
+
+
+function showLoading() {
+    document.getElementById('loading').classList.remove('loading-hidden');
+    document.getElementById('loading').classList.add('loading-visible');
+}
+
+function hideLoading() {
+    document.getElementById('loading').classList.remove('loading-visible');
+    document.getElementById('loading').classList.add('loading-hidden');
+}
+
+
+function updateStats(stats) {
+    console.log("Updating stats with:", stats);
+    // stats is a dictionary with the following keys: backtrack_attempts, failures
+    const statsElement = document.getElementById('stats');
+    statsElement.innerText = `Backtrack attempts: ${stats.backtrack_attempts}, failures: ${stats.failures}`;
+
+}
+
+function updateBoard(solution) {
+    console.log("Updating board with:", solution);
+    const board = document.getElementById('sudoku-board');
+    for (let i = 0; i < 9; i++) {
+        const row = board.rows[i];
+        for (let j = 0; j < 9; j++) {
+            const key = `${i}-${j}`;
+            const value = solution[key];
+
+            if (value && value[0] !== undefined) {
+                const cell = row.cells[j];
+                cell.innerText = value[0];
+            } else {
+                console.error(`Undefined value at solution[${key}]`);
+            }
+        }
+    }
 }
