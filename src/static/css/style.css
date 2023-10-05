@@ -29,6 +29,14 @@ table {
     color: black;
     font-weight: bold;
 }
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: justify;
+    padding: 2%;
+    /* margin: 0 0 15px 0; */
+}
 
 td {
     width: 50px;
