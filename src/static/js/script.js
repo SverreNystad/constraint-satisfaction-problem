@@ -98,33 +98,6 @@ function getBoardAsArray() {
     return boardArray;
 }
 
-function sendBoardToServer(boardArray) {
-    fetch('/solve', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            board: boardArray
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Received data:', data);  // Add this line to log received data
-        if (data.error) {
-            alert(data.error);
-            return;
-        }
-        const stats = data.stats;
-        updateStats(stats);
-        const solution = data.solution;
-        updateBoard(solution);
-        
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
 function updateBoard(solution) {
     console.log("Updating board with:", solution);
     const board = document.getElementById('sudoku-board');
@@ -145,6 +118,7 @@ function updateBoard(solution) {
 }
 
 function updateStats(stats) {
+    console.log("Updating stats with:", stats);
     // stats is a dictionary with the following keys: backtrack_attempts, failures
     const statsElement = document.getElementById('stats');
     statsElement.innerText = `Backtrack attempts: ${stats.backtrack_attempts}, failures: ${stats.failures}`;
@@ -178,13 +152,17 @@ function sendBoardToServer(boardArray) {
     })
     .then(data => {
         hideLoading();  // Hide loading spinner when response is received
-        
+
+        console.log('Received data:', data);  // Add this line to log received data
         if (data.error) {
-            console.error(data.error);
-        } else {
-            console.log('Received data:', data);
-            updateBoard(data.solution);
+            alert(data.error);
+            return;
         }
+        const stats = data.stats;
+        updateStats(stats);
+        const solution = data.solution;
+        updateBoard(solution);
+        
     })
     .catch(error => {
         hideLoading();  // Hide loading spinner if an error occurs
