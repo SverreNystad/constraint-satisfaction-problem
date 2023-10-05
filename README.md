@@ -38,7 +38,7 @@ This is the sudoku solver. It uses CSP to solve the sudoku. The creators of this
 The application is built with Flask and pure javascript. The CSP is implemented in python. The CSP is a backtracking algorithm. To learn more about CSP look here [CSP](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) and our [Assignment](docs/Assignment%203%20Constraint%20Satisfaction%20Problems.pdf).
 
 ## Picture of the application:
-![frontend](docs\images\application.png)
+![frontend](docs/images/application.png)
 
 
 ## Usage
