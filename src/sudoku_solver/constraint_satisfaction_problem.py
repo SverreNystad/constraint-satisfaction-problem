@@ -280,3 +280,6 @@ class CSP:
         """Print the number of times the backtrack function was called and the number of times it failed."""
         print("Backtrack attempts: " + str(self.backtrack_attempts))
         print("Backtrack failures: " + str(self.failures))
+    
+    def get_stats(self):
+        return {"backtrack_attempts": self.backtrack_attempts, "failures": self.failures}
