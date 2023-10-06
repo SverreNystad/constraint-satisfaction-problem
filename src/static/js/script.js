@@ -12,10 +12,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function handleInput(event) {
+const handleInput = (event) => {
+    currentCell = document.activeElement;
     // Allow navigation keys
-    if (event.key === "Backspace" || event.key === "ArrowRight" || event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "Delete") {
+    if (event.key === "Backspace" || event.key === "Delete") {
         return true;
+    }
+
+    let nextCell = null;
+
+    switch (event.key) {
+        case 'ArrowLeft':
+            nextCell = currentCell.previousElementSibling;
+            break;
+        case 'ArrowRight':
+            nextCell = currentCell.nextElementSibling;
+            break;
+        case 'ArrowUp':
+            let prevRow = currentCell.parentElement.previousElementSibling;
+            if (prevRow) {
+                nextCell = prevRow.children[currentCell.cellIndex];
+            }
+            break;
+        case 'ArrowDown':
+            let nextRow = currentCell.parentElement.nextElementSibling;
+            if (nextRow) {
+                nextCell = nextRow.children[currentCell.cellIndex];
+            }
+            break;
+    }
+
+    // Focus the new cell if it exists
+    if (nextCell && nextCell.isContentEditable) {
+        nextCell.focus();
+        event.preventDefault(); // Prevents the arrow keys from scrolling the page
     }
     
     // Check if the key pressed is a digit 1-9
@@ -52,7 +82,7 @@ function getBoardAsArray() {
 // Reset the board to empty
 document.addEventListener("DOMContentLoaded", () => {
     const clearButton = document.getElementById('clear-button');
-    clearButton.addEventListener('click', function() {
+    clearButton.addEventListener('click', () => {
         const board = document.getElementById('sudoku-board');
         for (let i = 0; i < 9; i++) {
             const row = board.rows[i];
