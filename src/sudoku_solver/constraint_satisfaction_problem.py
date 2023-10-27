@@ -267,12 +267,14 @@ class CSP:
             found_one = False
             for y in domain_j:
                 for constraint in self.constraints[x_i][x_j]:
+                    # Check that the arc is consistent with the constraints of variables x_i and x_j. 
                     if (x, y) == constraint:
                         found_one = True
             if not found_one:
+                # Remove the value from the domain space of variable x_i. 
                 domain_i.remove(x)
                 revised = True
-
+        
         assignment[x_i] = domain_i
         return revised
     
