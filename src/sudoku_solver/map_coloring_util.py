@@ -1,4 +1,3 @@
-
 from src.sudoku_solver.constraint_satisfaction_problem import CSP
 
 
