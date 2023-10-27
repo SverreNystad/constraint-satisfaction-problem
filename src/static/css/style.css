@@ -1,0 +1,177 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    /* background: linear-gradient(to border-top, #f0f0f0, #d3bfb1); */
+    background: linear-gradient(-45deg, #ffffff, #f4ebe5, #c9d8de, #e2f8f3);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    color: black;
+    font-weight: bold;
+}
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: justify;
+    padding: 2%;
+    /* margin: 0 0 15px 0; */
+}
+
+td {
+    flex: auto;
+    line-height: 50px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #525050;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Emphasize 3x3 grids */
+tr:nth-child(3) td,
+tr:nth-child(6) td {
+    border-bottom: 2px solid #666;
+}
+
+td:nth-child(3),
+td:nth-child(6) {
+    border-right: 2px solid #666;
+}
+
+td:hover {
+    background-color: #e0e0e0;
+}
+
+td:focus {
+    outline: none;
+    background-color: #ddd;
+}
+.loading-hidden {
+    display: none;
+}
+
+.loading-visible {
+    display: block;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.loading-spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#error-message {
+    color: red;
+}
+
+.cool-button {
+    background-color: rgb(194, 182, 182); /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+    box-shadow: 0 6px #999;
+}
+
+.cool-button:hover {
+    background-color: #45a049;
+    color: white;
+    box-shadow: 0 12px #666;
+    transform: translateY(-5px);
+}
+
+.cool-button:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(2px);
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+.cool-h1 {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(155, 141, 141);
+    text-shadow: 2px 2px 4px #999;
+    text-align: center;
+    font-size: 36px;
+    transition: all 0.5s ease;
+    cursor: default;
+}
+
+.cool-h1:hover {
+    text-shadow: 4px 4px 6px #666;
+    transform: scale(1.05);
+}
+
+.cool-h1::before,
+.cool-h1::after {
+    content: "";
+    display: inline-block;
+    width: 50px;
+    height: 2px;
+    background:  rgb(126, 122, 122);
+    position: relative;
+    vertical-align: middle;
+    transition: all 0.5s ease;
+}
+
+.cool-h1::before { 
+    margin-right: 15px;
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+}
+
+.cool-h1::after {
+    margin-left: 15px;
+    transform: scaleX(0);
+    transform-origin: 0% 50%;
+}
+
+.cool-h1:hover::before,
+.cool-h1:hover::after {
+    transform: scaleX(1);
+}

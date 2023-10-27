@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- <script src="src/static/js/script.js" defer></script> -->
+    <title>Sudoku</title>
+</head>
+<body>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <h1 class="cool-h1">Sudoku Solver</h1>
+    <p> Constraint Satisfaction Problems (CSP) offer a structured approach to solving puzzles like Sudoku by methodically ensuring that every decision adheres to a predefined set of rules or constraints. In the context of Sudoku, each grid cell represents a variable, and each variable can take on a value from the domain of numbers 1 through 9. The constraints are derived from Sudoku’s rules: each row, column, and predefined 3x3 grid must contain all the numbers 1-9 without repetition. Employing a CSP-solving strategy, such as backtracking, the algorithm assigns values to grid cells (variables) while consistently checking to ensure adherence to the constraints. If a violation is detected, the algorithm backtracks to alter previous choices, iteratively refining its decisions until a solution that satisfies all constraints is found. This methodical, rule-based approach makes CSP a fitting model for elucidating and resolving Sudoku puzzles.</p>
+    <table id="sudoku-board">
+        <!-- Your Sudoku table will be inserted here by JavaScript -->
+    </table>
+    <div id="button-container">
+        <button class="cool-button" id="solve-button">Solve Sudoku</button>
+        <button class="cool-button" id="clear-button">Clear Sudoku</button>
+    </div>
+        
+    <div id="loading" class="loading-hidden">
+        <div class="loading-spinner"></div>
+    </div>
+
+    
+    <p id="stats"></p>
+    <p id="error-message"></p>
+</body>
+</html>
