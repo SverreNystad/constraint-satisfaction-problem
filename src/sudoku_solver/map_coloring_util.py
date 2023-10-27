@@ -1,5 +1,6 @@
 
-from src.constraint_satisfaction_problem import CSP
+from src.sudoku_solver.constraint_satisfaction_problem import CSP
+
 
 
 def create_map_coloring_csp() -> CSP:

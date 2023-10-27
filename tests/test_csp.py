@@ -1,5 +1,5 @@
-from src.constraint_satisfaction_problem import CSP  
-from src.map_coloring_util import create_map_coloring_csp  
+from src.sudoku_solver.constraint_satisfaction_problem import CSP
+from src.sudoku_solver.map_coloring_util import create_map_coloring_csp  
 
 def test_inference_for_no_assignment():
     csp = CSP()
