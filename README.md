@@ -6,7 +6,7 @@
 [![codecov.io](https://codecov.io/github/SverreNystad/constraint-satisfaction-problem/coverage.svg?branch=main)](https://codecov.io/github/SverreNystad/constraint-satisfaction-problem?branch=main)
 ![GPT-dungeon-master top language](https://img.shields.io/github/languages/top/SverreNystad/constraint-satisfaction-problem)
 ![GitHub language count](https://img.shields.io/github/languages/count/SverreNystad/constraint-satisfaction-problem)
-[![Project Version](https://img.shields.io/badge/version-0.0.1-blue)](https://img.shields.io/badge/version-0.0.1-blue)
+[![Project Version](https://img.shields.io/badge/version-1.0.0-blue)](https://img.shields.io/badge/version-1.0.0-blue)
 
 </div>
 
