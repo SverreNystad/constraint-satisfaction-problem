@@ -2,10 +2,10 @@
 
 <div align="center">
 
-![Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/SverrNystad/constraint-satisfaction-problem/python-package.yml)
-[![codecov.io](https://codecov.io/github/SverrNystad/constraint-satisfaction-problem/coverage.svg?branch=main)](https://codecov.io/github/SverrNystad/constraint-satisfaction-problem?branch=main)
-![GPT-dungeon-master top language](https://img.shields.io/github/languages/top/SverrNystad/constraint-satisfaction-problem)
-![GitHub language count](https://img.shields.io/github/languages/count/SverrNystad/constraint-satisfaction-problem)
+![Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/SverreNystad/constraint-satisfaction-problem/python-package.yml)
+[![codecov.io](https://codecov.io/github/SverreNystad/constraint-satisfaction-problem/coverage.svg?branch=main)](https://codecov.io/github/SverreNystad/constraint-satisfaction-problem?branch=main)
+![GPT-dungeon-master top language](https://img.shields.io/github/languages/top/SverreNystad/constraint-satisfaction-problem)
+![GitHub language count](https://img.shields.io/github/languages/count/SverreNystad/constraint-satisfaction-problem)
 [![Project Version](https://img.shields.io/badge/version-0.0.1-blue)](https://img.shields.io/badge/version-0.0.1-blue)
 
 </div>
