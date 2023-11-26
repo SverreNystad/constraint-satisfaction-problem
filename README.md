@@ -40,6 +40,57 @@ The application is built with Flask and pure javascript. The CSP is implemented 
 ## Picture of the application:
 ![frontend](docs/images/application.png)
 
+## Installation
+To install the Sudoku solver, one needs to have all the prerequisites installed, clone the repository, and install all dependencies. The following sections will guide you through the process.
+### Prerequisites
+- Ensure Python 3.9 or newer is installed on your machine. [Download Python](https://www.python.org/downloads/)
+  
+
+### Clone the repository
+```bash
+git clone https://github.com/SverreNystad/constraint-satisfaction-problem.git
+cd constraint-satisfaction-problem
+```
+
+### Virtual Environment (Recommended)
+
+<details> 
+<summary><strong>🚀 A better way to set up repositories </strong></summary>
+
+A virtual environment in Python is a self-contained directory that contains a Python installation for a particular version of Python, plus a number of additional packages. Using a virtual environment for your project ensures that the project's dependencies are isolated from the system-wide Python and other Python projects. This is especially useful when working on multiple projects with differing dependencies, as it prevents potential conflicts between packages and allows for easy management of requirements.
+
+1. **To set up and use a virtual environment for Sudoku solver:**
+    First, install the virtualenv package using pip. This tool helps create isolated Python environments.
+    ```bash
+    pip install virtualenv
+    ```
+
+2. **Create virtual environment**
+    Next, create a new virtual environment in the project directory. This environment is a directory containing a complete Python environment (interpreter and other necessary files).
+    ```bash
+    python -m venv venv
+    ```
+
+4. **Activate virtual environment**
+    To activate the environment, run the following command:
+    * For windows:
+        ```bash
+        source ./venv/Scripts/activate
+        ```
+
+    * For Linux / MacOS:
+        ```bash
+        source venv/bin/activate
+        ```
+</details>
+
+### Install dependencies
+With the virtual environment activated, install the project dependencies:
+```bash
+pip install -r requirements.txt
+```
+The requirements.txt file contains a list of packages necessary to run Sudoku solver. Installing them in an activated virtual environment ensures they are available to the project without affecting other Python projects or system settings.
+
 
 ## Usage
 There are two usages of this application. The first one is to use the application as a web application. The second one is to use the application as a python library.
@@ -54,41 +105,13 @@ flask run
 python main.py
 ```
 
-## Installation
-To install the Sudoku solver, one needs to have all the prerequisites installed and set up, and follow the setup guild. The following sections will guide you through the process.
-### Prerequisites
-- Python 3.9 or higher
-  
-
-### Setup
-1. Clone the repository
-```bash
-git clone https://github.com/SverreNystad/constraint-satisfaction-problem.git
-cd constraint-satisfaction-problem
-```
-2. Create a virtual environment
-    #### On Windows:
-    ```bash
-    python3 -m venv venv
-    source venv/Scripts/activate
-    ```
-    #### On macOS and Linux: 
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
-
-3. Install the required packages
-```bash
-pip install -r requirements.txt
-```
 ## Tests
 To run all the tests, run the following command in the root directory of the project:
 ```bash
 pytest
 ```
 
-### License
+## License
 Licensed under the [MIT License](LICENSE). Because this is a template repository, you need to change the license if you want to use it for your own project.
 
 
