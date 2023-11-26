@@ -17,17 +17,19 @@
     <a href="#constraint-satisfaction-problems"> Constraint Satisfaction Problems </a>
     </li>
     <li>
-      <a href="#Introduction">Introduction</a>
+      <a href="#introduction">Introduction</a>
     </li>
     </li>
-    <li><a href="#Usage">Usage</a></li>
-    <li><a href="#Installation">Installation</a>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#installation">Installation</a>
       <ul>
-        <li><a href="#Prerequisites">Prerequisites</a></li>
-        <li><a href="#Setup">Setup</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#clone-the-repository">Clone the repository</a></li>
+        <li><a href="#virtual-environment-(recommended)">Virtual Environment</a></li>
+        <li><a href="#install-dependencies">Install dependencies</a></li>
       </ul>
     </li>
-    <li><a href="#Tests">Tests</a></li>
+    <li><a href="#tests">Tests</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
