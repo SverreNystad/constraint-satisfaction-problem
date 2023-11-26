@@ -20,7 +20,6 @@
       <a href="#introduction">Introduction</a>
     </li>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#installation">Installation</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -29,6 +28,7 @@
         <li><a href="#install-dependencies">Install dependencies</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#tests">Tests</a></li>
     <li><a href="#license">License</a></li>
   </ol>
