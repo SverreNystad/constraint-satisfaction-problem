@@ -25,7 +25,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#clone-the-repository">Clone the repository</a></li>
-        <li><a href="#virtual-environment-(recommended)">Virtual Environment</a></li>
+        <li><a href="#virtual-environment-recommended">Virtual Environment</a></li>
         <li><a href="#install-dependencies">Install dependencies</a></li>
       </ul>
     </li>
