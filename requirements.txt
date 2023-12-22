@@ -4,7 +4,7 @@ colorama==0.4.6
 coverage==7.3.2
 exceptiongroup==1.2.0
 Flask==3.0.0
-importlib-metadata==7.0.0
+importlib-metadata==7.0.1
 iniconfig==2.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
