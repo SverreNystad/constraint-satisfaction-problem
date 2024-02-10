@@ -119,7 +119,7 @@ Licensed under the [MIT License](LICENSE). Because this is a template repository
 
 ## Contributors
 I would like to thank Simon Sandvik Lee, you are the best!
-<table>
+<table align="center">
   <tr>
     <td align="center">
         <a href="https://github.com/SverreNystad">
@@ -133,6 +133,7 @@ I would like to thank Simon Sandvik Lee, you are the best!
             <sub><b>Simon Sandvik Lee</b></sub>
         </a>
     </td>
+  <tr>
 </table>
 
 ### Acknowledgements
